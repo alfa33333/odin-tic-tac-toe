@@ -1,0 +1,50 @@
+h1 {
+    text-align: center;
+}
+
+table {
+    margin: auto;
+    border: 1px solid black;
+    width: 600px;
+    height: 600px;
+    border-spacing: 0px;;
+}
+
+td {
+    width: 33.33%;
+    height: 33.33%;
+    border: 1px solid black;
+}
+
+
+.cross-icon {
+  position: relative; /* Essential for positioning pseudo-elements */
+}
+
+.cross-icon::before,
+.cross-icon::after {
+  content: ''; /* Required for pseudo-elements */
+  position: absolute;
+  background-color: #333; /* Color of the cross */
+  width: 100%; /* Make lines span the width of the parent */
+  height: 2px; /* Thickness of the lines */
+  top: 50%; /* Center vertically */
+  left: 0; /* Align to the left */
+  transform-origin: center; /* Ensure rotation is from the center */
+}
+
+.cross-icon::before {
+  transform: translateY(-50%) rotate(45deg); 
+}
+
+.cross-icon::after {
+  transform: translateY(-50%) rotate(-45deg); 
+}
+
+.circle {
+  width: 80%;
+  height: 80%;
+  margin: auto;
+  border: 2px solid black;
+  border-radius: 50%
+}
