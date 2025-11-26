@@ -68,7 +68,7 @@ function cell(){
     }
 }
 
-const gameloop = ( function (  
+const gameloop = function (  
     playerOneName = "Player One",
     playerTwoName = "Player Two"){
     console.log("welcome to the game")
@@ -108,7 +108,47 @@ const gameloop = ( function (
 
     return {
         playRound,
-        getActivePlayer
+        getActivePlayer,
+        getBoard: game.getBoard
     };
-}
-)();
+};
+
+const screenController = ( function(){
+    const mainGame = gameloop();
+    const viewBoard = document.getElementById('board');
+    for(let i=0; i < 3; i++){
+        const row = document.createElement('tr');
+        for(let j=0; j<3; j++){
+            const column = document.createElement('td');
+            const  button = document.createElement('button');
+            button.dataset.row = i;
+            button.dataset.column = j;
+            button.addEventListener('click', eventTrigger);
+            column.appendChild(button)
+            row.appendChild(column);
+        }
+        viewBoard.appendChild(row);
+    }
+
+    function eventTrigger(e){
+            const rowY = e.target.dataset.row;
+            const colX = e.target.dataset.column;
+            console.log( rowY, colX);
+            console.log( mainGame.getBoard()[rowY][colX].getValue());
+            if ( mainGame.getBoard()[rowY][colX].getValue() !== null) return 
+            const player = mainGame.getActivePlayer();         
+            mainGame.playRound(colX,rowY);    
+            const mark = document.createElement('div');
+            if ( player.token === 'x'){
+                mark.classList.add('cross-icon')
+            } else {
+                mark.classList.add('circle')
+            }
+            e.target.appendChild(mark);
+    }
+
+})();
+
+
+
+

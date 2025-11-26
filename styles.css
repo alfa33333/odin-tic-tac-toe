@@ -16,9 +16,18 @@ td {
     border: 1px solid black;
 }
 
+button{
+    width: 100%;
+    height: 100%;
+    /* border: none; */
+    cursor: pointer;
+    /* background-color: inherit; */
+}
+
 
 .cross-icon {
   position: relative; /* Essential for positioning pseudo-elements */
+  pointer-events: none;
 }
 
 .cross-icon::before,
@@ -46,5 +55,6 @@ td {
   height: 80%;
   margin: auto;
   border: 2px solid black;
-  border-radius: 50%
+  border-radius: 50%;
+  pointer-events: none;
 }
