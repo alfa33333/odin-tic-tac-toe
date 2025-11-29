@@ -103,13 +103,17 @@ const gameloop = function (
     const complete = game.setBoard(posX, posY, activePlayer.token);
 
     if (complete === 0) {
-      switchPlayer();
       const winner = checkWinCondition();
-      const fullboard = game.getBoard().every((row) => row.some((cell) => cell.getValue() === null ) !== true);
-      console.log("board full:",fullboard)
+      const fullboard = game
+        .getBoard()
+        .every((row) => row.some((cell) => cell.getValue() === null) !== true);
       if (winner) {
         console.log("The winner is ", winner);
+        return winner;
+      } else if (fullboard) {
+        return "draw";
       }
+      switchPlayer();
     }
     game.printBoard();
   };
@@ -133,7 +137,7 @@ const gameloop = function (
       }
     }
 
-    for (let i=0; i < 3; i++) {
+    for (let i = 0; i < 3; i++) {
       let winOne = 0;
       let winTwo = 0;
       for (let a = 0; a < 3; a++) {
@@ -149,7 +153,11 @@ const gameloop = function (
       }
     }
 
-    if (board[0][0].getValue() === board[1][1].getValue() && board[0][0].getValue() === board[2][2].getValue() && board[0][0].getValue() !== null) {
+    if (
+      board[0][0].getValue() === board[1][1].getValue() &&
+      board[0][0].getValue() === board[2][2].getValue() &&
+      board[0][0].getValue() !== null
+    ) {
       if (board[0][0].getValue() === players[0].token) {
         return players[0].name;
       } else if (board[0][0].getValue() === players[1].token) {
@@ -157,7 +165,11 @@ const gameloop = function (
       }
     }
 
-    if (board[0][2].getValue() === board[1][1].getValue() && board[0][2].getValue() === board[2][0].getValue() && board[0][2].getValue() !== null) {
+    if (
+      board[0][2].getValue() === board[1][1].getValue() &&
+      board[0][2].getValue() === board[2][0].getValue() &&
+      board[0][2].getValue() !== null
+    ) {
       if (board[0][2].getValue() === players[0].token) {
         return players[0].name;
       } else if (board[0][2].getValue() === players[1].token) {
@@ -199,7 +211,7 @@ const screenController = (function () {
     console.log(mainGame.getBoard()[rowY][colX].getValue());
     if (mainGame.getBoard()[rowY][colX].getValue() !== null) return;
     const player = mainGame.getActivePlayer();
-    mainGame.playRound(colX, rowY);
+    const endingState = mainGame.playRound(colX, rowY);
     const mark = document.createElement("div");
     if (player.token === "x") {
       mark.classList.add("cross-icon");
@@ -207,5 +219,34 @@ const screenController = (function () {
       mark.classList.add("circle");
     }
     e.target.appendChild(mark);
+    e.target.disabled = true;
+    e.target.style.cursor = "default";
+    if (endingState) {
+      endGameDisplay(endingState);
+      blockBoard();
+    }
+  }
+
+  function endGameDisplay(result) {
+    const endBanner = document.getElementById("end");
+    const endPhrase = document.createElement("h2");
+    if (result === "draw") {
+      endPhrase.textContent = "Game is a Draw!";
+    } else {
+      endPhrase.textContent = `The winner ${result}. Congratulations!`;
+    }
+    endBanner.appendChild(endPhrase);
+  }
+
+  function blockBoard() {
+    const viewBoard = document.getElementById("board");
+    const rows = viewBoard.querySelectorAll("tr");
+    rows.forEach((row) => {
+      row.childNodes.forEach((td) => {
+        const button = td.children[0];
+        button.disabled = true;
+        button.style.cursor = "default";
+      });
+    });
   }
 })();
