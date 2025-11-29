@@ -105,6 +105,8 @@ const gameloop = function (
     if (complete === 0) {
       switchPlayer();
       const winner = checkWinCondition();
+      const fullboard = game.getBoard().every((row) => row.some((cell) => cell.getValue() === null ) !== true);
+      console.log("board full:",fullboard)
       if (winner) {
         console.log("The winner is ", winner);
       }
