@@ -189,6 +189,8 @@ const gameloop = function (
 
 const screenController = (function () {
   const mainGame = gameloop();
+
+  // Draw board
   const viewBoard = document.getElementById("board");
   for (let i = 0; i < 3; i++) {
     const row = document.createElement("tr");
@@ -197,6 +199,7 @@ const screenController = (function () {
       const button = document.createElement("button");
       button.dataset.row = i;
       button.dataset.column = j;
+      button.classList.add("game-cells")
       button.addEventListener("click", eventTrigger);
       column.appendChild(button);
       row.appendChild(column);
@@ -249,4 +252,6 @@ const screenController = (function () {
       });
     });
   }
+
+
 })();

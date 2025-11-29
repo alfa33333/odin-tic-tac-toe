@@ -16,12 +16,21 @@ td {
     border: 1px solid black;
 }
 
-button{
+.game-cells {
     width: 100%;
     height: 100%;
     border: none;
     cursor: pointer;
     background-color: inherit;
+}
+
+.state-buttons {
+  margin: auto;
+  width: 600px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 20px;
 }
 
 
