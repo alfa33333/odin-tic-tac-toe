@@ -1,11 +1,19 @@
 function gameboard() {
-  let board = [];
+  let board;
+  newBoard();
 
-  for (let row = 0; row < 3; row++) {
-    board[row] = [];
-    for (let column = 0; column < 3; column++) {
-      board[row].push(cell());
+  function newBoard() {
+    board = []
+    for (let row = 0; row < 3; row++) {
+      board[row] = [];
+      for (let column = 0; column < 3; column++) {
+        board[row].push(cell());
+      }
     }
+  }
+
+  function reset(){
+    newBoard();
   }
 
   function setBoard(posX, posY, player) {
@@ -42,6 +50,7 @@ function gameboard() {
     setBoard,
     getBoard,
     printBoard,
+    reset
   };
 }
 
@@ -87,9 +96,15 @@ const gameloop = function (
   ];
 
   const game = gameboard();
-  game.printBoard();
+  let activePlayer;
+  setup();
 
-  let activePlayer = players[0];
+  function setup(){
+    game.reset();
+    game.printBoard();
+    activePlayer = players[0];
+  }
+  
 
   function getActivePlayer() {
     return activePlayer;
@@ -183,28 +198,32 @@ const gameloop = function (
   return {
     playRound,
     getActivePlayer,
+    setup,
     getBoard: game.getBoard,
   };
 };
 
 const screenController = (function () {
   const mainGame = gameloop();
+  createBoard();
 
   // Draw board
-  const viewBoard = document.getElementById("board");
-  for (let i = 0; i < 3; i++) {
-    const row = document.createElement("tr");
-    for (let j = 0; j < 3; j++) {
-      const column = document.createElement("td");
-      const button = document.createElement("button");
-      button.dataset.row = i;
-      button.dataset.column = j;
-      button.classList.add("game-cells")
-      button.addEventListener("click", eventTrigger);
-      column.appendChild(button);
-      row.appendChild(column);
+  function createBoard() {
+    const viewBoard = document.getElementById("board");
+    for (let i = 0; i < 3; i++) {
+      const row = document.createElement("tr");
+      for (let j = 0; j < 3; j++) {
+        const column = document.createElement("td");
+        const button = document.createElement("button");
+        button.dataset.row = i;
+        button.dataset.column = j;
+        button.classList.add("game-cells");
+        button.addEventListener("click", eventTrigger);
+        column.appendChild(button);
+        row.appendChild(column);
+      }
+      viewBoard.appendChild(row);
     }
-    viewBoard.appendChild(row);
   }
 
   function eventTrigger(e) {
@@ -247,11 +266,23 @@ const screenController = (function () {
     rows.forEach((row) => {
       row.childNodes.forEach((td) => {
         const button = td.children[0];
-        button.disabled = true;
         button.style.cursor = "default";
+        button.removeEventListener("click", eventTrigger);
       });
     });
   }
 
+  function reset() {
+    blockBoard();
+    const viewBoard = document.getElementById("board");
+    while (viewBoard.firstChild) {
+      viewBoard.removeChild(viewBoard.firstChild);
+    }
+    mainGame.setup();
+    createBoard();
+  }
 
+  return {
+    reset,
+  };
 })();
