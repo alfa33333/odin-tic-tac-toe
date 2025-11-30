@@ -3,6 +3,16 @@ h1,h2 {
     font-family: "Sora", sans-serif;
 }
 
+h2 {
+  border: 5px solid black;
+  width: fit-content;
+  margin: auto;
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #e3dff2;
+}
+
 table {
     margin: auto;
     border: 5px solid black;
@@ -88,4 +98,5 @@ td {
   border: 5px solid black;
   border-radius: 50%;
   pointer-events: none;
+  background-color: #FFB2EF;
 }
