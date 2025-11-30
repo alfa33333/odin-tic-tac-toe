@@ -205,7 +205,7 @@ const gameloop = function (
 
 const screenController = (function () {
   const mainGame = gameloop();
-  createBoard();
+  // createBoard();
 
   // Draw board
   function createBoard() {
@@ -252,13 +252,17 @@ const screenController = (function () {
   function endGameDisplay(result) {
     const endBanner = document.getElementById("end");
     const endPhrase = document.createElement("h2");
-    if (result === "draw") {
-      endPhrase.textContent = "Game is a Draw!";
-    } else {
-      endPhrase.textContent = `The winner ${result}. Congratulations!`;
-    }
-    endBanner.appendChild(endPhrase);
+    
+
+      if (result === "draw") {
+        endPhrase.textContent = "Game is a Draw!";
+      } else {
+        endPhrase.textContent = `The winner ${result}. Congratulations!`;
+      }
+      endBanner.appendChild(endPhrase);
+
   }
+
 
   function blockBoard() {
     const viewBoard = document.getElementById("board");
@@ -279,10 +283,24 @@ const screenController = (function () {
       viewBoard.removeChild(viewBoard.firstChild);
     }
     mainGame.setup();
+    const endBanner = document.getElementById("end");
+    while (endBanner.firstChild) {
+      endBanner.removeChild(endBanner.firstChild);
+    }
     createBoard();
+  }
+
+  function start() {
+    const table = document.querySelector("table");
+    table.style.border = "none";
+    const viewBoard = document.getElementById("board");
+    if (viewBoard.children.length === 0) {
+      createBoard();
+    }    
   }
 
   return {
     reset,
+    start
   };
 })();
